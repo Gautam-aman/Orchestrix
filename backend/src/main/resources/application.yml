@@ -1,1 +1,33 @@
-spring.application.name=backend
+spring:
+  application:
+    name: orchestrix-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flowgrid
+    username: orchestrix
+    password: orchestrix_dev_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+
+
