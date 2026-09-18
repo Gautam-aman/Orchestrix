@@ -10,6 +10,8 @@ import com.aman.backend.organization.dto.OrganizationResponse;
 import com.aman.backend.organization.entity.Organization;
 import com.aman.backend.organization.entity.OrganizationStatus;
 import com.aman.backend.organization.repository.OrganizationRepository;
+import com.aman.backend.shared.exception.DuplicateOrganizationSlugException;
+import com.aman.backend.shared.exception.OrganizationNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +31,7 @@ public class OrganizationService {
 				.toLowerCase(Locale.ROOT);
 
 		if(organizationRepository.existsBySlug(normalSlug)) {
-			throw new IllegalArgumentException("Slug already exists");
+			throw new DuplicateOrganizationSlugException(normalSlug);
 		}
 
 		Organization organization = new Organization();
@@ -45,9 +47,7 @@ public class OrganizationService {
 	@Transactional
 	public OrganizationResponse getById(UUID id) {
 		Organization organization = organizationRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException(
-						"Organization not found"
-				));
+				.orElseThrow(() -> new OrganizationNotFoundException(id));
 
 		return toResponse(organization);
 	}
