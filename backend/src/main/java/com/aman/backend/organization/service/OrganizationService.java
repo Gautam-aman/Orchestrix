@@ -10,13 +10,19 @@ import com.aman.backend.organization.dto.OrganizationResponse;
 import com.aman.backend.organization.entity.Organization;
 import com.aman.backend.organization.entity.OrganizationStatus;
 import com.aman.backend.organization.repository.OrganizationRepository;
+import com.aman.backend.shared.exception.ApiErrorResponse;
 import com.aman.backend.shared.exception.DuplicateOrganizationSlugException;
 import com.aman.backend.shared.exception.OrganizationNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +69,7 @@ public class OrganizationService {
 				organization.getUpdatedAt()
 		);
 	}
+
+
 
 }

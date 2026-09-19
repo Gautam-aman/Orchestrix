@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -68,6 +69,16 @@ public class GlobalExceptionHandler {
 		);
 
 		return ResponseEntity.status(status).body(response);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ApiErrorResponse> handleDatabaseConstraint(DataIntegrityViolationException exception, HttpServletRequest request) {
+		return buildResponse(
+				HttpStatus.CONFLICT,
+				"Database constraint violation",
+				request.getRequestURI(),
+				List.of()
+		);
 	}
 
 }
